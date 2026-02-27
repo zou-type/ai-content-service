@@ -137,7 +137,7 @@ jobs:
           python scripts/generate_calculation_examples.py
       
       - name: Upload calculation reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 
         with:
           name: calculation-reports
           path: reports/
