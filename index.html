@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI内容创作服务 - 专业、高效、可扩展</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --success: #10b981;
+            --light: #f8fafc;
+            --dark: #1e293b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-top: 2rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .pricing-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 2rem;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        
+        .pricing-card.basic {
+            border-color: #10b981;
+        }
+        
+        .pricing-card.standard {
+            border-color: #3b82f6;
+        }
+        
+        .pricing-card.premium {
+            border-color: #8b5cf6;
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+        
+        .price span {
+            font-size: 1rem;
+            color: #64748b;
+        }
+        
+        .features {
+            list-style: none;
+        }
+        
+        .features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .features li:before {
+            content: "✓";
+            color: var(--success);
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .case-study {
+            background: #f1f5f9;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .stat {
+            text-align: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI内容创作服务</h1>
+            <p class="tagline">专业、高效、可扩展的内容解决方案</p>
+            <a href="#contact" class="cta-button">立即获取免费咨询</a>
+        </header>
+        
+        <div class="main-content">
+            <!-- 价值主张 -->
+            <section class="section">
+                <h2>为什么选择我们的AI内容服务？</h2>
+                <p>在2025年，内容创作成本持续上升，但质量要求越来越高。我们的AI驱动内容服务为您提供：</p>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-number">60-80%</div>
+                        <div>成本节约</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">24-48h</div>
+                        <div>快速交付</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">100%</div>
+                        <div>原创保证</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">4.9/5</div>
+                        <div>客户评分</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 服务套餐 -->
+            <section class="section">
+                <h2>服务套餐</h2>
+                <p>选择最适合您业务需求的套餐：</p>
+                
+                <div class="pricing-cards">
+                    <!-- 基础套餐 -->
+                    <div class="pricing-card basic">
+                        <h3>基础套餐</h3>
+                        <p>适合初创公司、个人品牌、小型电商</p>
+                        <div class="price">$500<span>/月</span></div>
+                        <ul class="features">
+                            <li>社交媒体内容：10篇/月</li>
+                            <li>博客文章：2篇/月</li>
+                            <li>营销文案：5篇/月</li>
+                            <li>内容优化建议</li>
+                            <li>24小时响应时间</li>
+                            <li>免费内容审核</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 标准套餐 -->
+                    <div class="pricing-card standard">
+                        <h3>标准套餐</h3>
+                        <p>适合成长型企业、中型电商、专业服务商</p>
+                        <div class="price">$1,200<span>/月</span></div>
+                        <ul class="features">
+                            <li>社交媒体内容：20篇/月</li>
+                            <li>博客文章：5篇/月</li>
+                            <li>营销文案：10篇/月</li>
+                            <li>内容策略规划</li>
+                            <li>月度分析报告</li>
+                            <li>竞品内容分析</li>
+                            <li>每周进度更新</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 高级套餐 -->
+                    <div class="pricing-card premium">
+                        <h3>高级套餐</h3>
+                        <p>适合企业客户、多个品牌、内容密集型业务</p>
+                        <div class="price">$2,500<span>/月</span></div>
+                        <ul class="features">
+                            <li>社交媒体内容：40篇/月</li>
+                            <li>博客文章：10篇/月</li>
+                            <li>营销文案：20篇/月</li>
+                            <li>完整内容策略</li>
+                            <li>竞品分析报告</li>
+                            <li>每周沟通会议</li>
+                            <li>专属客户经理</li>
+                            <li>A/B测试支持</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 案例展示 -->
+            <section class="section">
+                <h2>成功案例</h2>
+                
+                <div class="case-study">
+                    <h3>案例1：SaaS初创公司 - 内容营销转型</h3>
+                    <p><strong>客户：</strong>TechFlow（项目管理SaaS）</p>
+                    <p><strong>挑战：</strong>内容产出慢，成本高，效果不明显</p>
+                    <p><strong>解决方案：</strong>标准套餐（$1,200/月）</p>
+                    <p><strong>成果（3个月）：</strong></p>
+                    <ul class="features">
+                        <li>博客流量增加320%</li>
+                        <li>免费试用注册增加45%</li>
+                        <li>社交媒体参与度提升180%</li>
+                        <li>相比传统机构节省$8,000</li>
+                    </ul>
+                </div>
+                
+                <div class="case-study">
+                    <h3>案例2：电商品牌 - 产品描述优化</h3>
+                    <p><strong>客户：</strong>EcoWear（可持续时尚）</p>
+                    <p><strong>挑战：</strong>产品描述单调，转化率低</p>
+                    <p><strong>解决方案：</strong>基础套餐 + 产品描述专项</p>
+                    <p><strong>成果（2个月）：</strong></p>
+                    <ul class="features">
+                        <li>产品页面转化率从1.2%提升到3.8%</li>
+                        <li>平均订单价值增加$15</li>
+                        <li>客户评价：4.9/5评分</li>
+                        <li>社交媒体粉丝增加5,000+</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <!-- 专长领域 -->
+            <section class="section">
+                <h2>我们的专长领域</h2>
+                <div class="pricing-cards">
+                    <div class="pricing-card">
+                        <h3>科技行业</h3>
+                        <ul class="features">
+                            <li>SaaS产品描述</li>
+                            <li>技术博客文章</li>
+                            <li>开发者文档</li>
+                            <li>API文档和教程</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <h3>电商和零售</h3>
+                        <ul class="features">
+                            <li>产品描述优化</li>
+                            <li>营销邮件序列</li>
+                            <li>社交媒体广告</li>
+                            <li>客户成功故事</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <h3>专业服务</h3>
+                        <ul class="features">
+                            <li>律师/咨询师博客</li>
+                            <li>行业白皮书</li>
+                            <li>案例研究</li>
+                            <li>教育内容</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 联系方式 -->
+            <section class="section" id="contact">
+                <h2>立即开始合作</h2>
+                <p>填写以下表格，我们将尽快与您联系安排免费咨询：</p>
+                
+                <div class="contact-form">
+                    <form id="consultationForm">
+                        <div class="form-group">
+                            <label for="name">姓名 *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">邮箱 *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company">公司/品牌</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="service">感兴趣的服务</label>
+                            <select id="service" name="service">
+                                <option value="">请选择</option>
+                                <option value="basic">基础套餐 ($500/月)</option>
+                                <option value="standard">标准套餐 ($1,200/月)</option>
+                                <option value="premium">高级套餐 ($2,500/月)</option>
+                                <option value="custom">定制方案</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">具体需求 *</label>
+                            <textarea id="message" name="message" rows="4" required placeholder="请简要描述您的业务和内容需求..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="cta-button" style="width: 100%; text-align: center;">提交咨询请求</button>
+                    </form>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>© 2025 AI内容创作服务. 保留所有权利.</p>
+            <p>邮箱: aicontent@example.com | 电话: +1 (555) 123-4567</p>
+        </footer>
+    </div>
+    
+    <script>
+        document.getElementById('consultationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                company: document.getElementById('company').value,
+                service: document.getElementById('service').value,
+                message: document.getElementById('message').value
+            };
+            
+            // 这里可以添加表单提交逻辑，比如发送到后端或邮件
+            alert('感谢您的咨询！我们会尽快通过邮件与您联系。');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
