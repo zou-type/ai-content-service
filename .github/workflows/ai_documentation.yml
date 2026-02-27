@@ -39,7 +39,7 @@ jobs:
       - name: Generate AI documentation
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-          HF_MODEL: ${{ secrets.HF_MODEL }}
+          HF_MODEL: "google/flan-t5-base" 
         run: |
           echo "开始生成AI文档..."
           python scripts/ai_documentation.py
