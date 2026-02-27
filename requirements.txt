@@ -1,5 +1,11 @@
-pip-requirements-parser==32.0.1
-pyparsing==3.1.1
-packaging==23.1
-wheel==0.38.4
-
+# 风荷载计算项目依赖
+# AI自动化工作流所需包
+# 核心依赖
+requests>=2.31.0
+# 开发依赖（可选）
+# python-dotenv>=1.0.0  # 环境变量管理
+# pytest>=7.4.0        # 测试框架
+# black>=23.0.0        # 代码格式化
+# flake8>=6.0.0        # 代码检查
+# 注意：Hugging Face API通过requests调用，无需额外安装
+# GitHub Actions会自动安装这些依赖
