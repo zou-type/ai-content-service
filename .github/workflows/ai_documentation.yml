@@ -1,0 +1,164 @@
+name: AI Assisted Documentation
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'src/**'
+      - 'examples/**'
+      - 'docs/**'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'src/**'
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+      
+      - name: Generate AI documentation
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_MODEL: ${{ secrets.HF_MODEL }}
+        run: |
+          echo "开始生成AI文档..."
+          python scripts/ai_documentation.py
+      
+      - name: Commit and push documentation
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # 检查是否有文档更新
+          if git diff --name-only docs/ | grep -q .; then
+            echo "有文档更新，提交更改..."
+            git add docs/
+            git commit -m "docs: 更新AI生成的文档 [skip ci]"
+            git push
+          else
+            echo "没有文档更新"
+          fi
+  
+  code-review:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+      
+      - name: AI Code Review
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_MODEL: ${{ secrets.HF_MODEL }}
+        run: |
+          echo "开始AI代码审查..."
+          python scripts/ai_code_review.py
+      
+      - name: Create Review Comment
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const reviewFile = 'ai_review_comments.json';
+            
+            if (fs.existsSync(reviewFile)) {
+              const comments = JSON.parse(fs.readFileSync(reviewFile, 'utf8'));
+              
+              for (const comment of comments) {
+                github.rest.pulls.createReviewComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: context.issue.number,
+                  commit_id: context.sha,
+                  path: comment.path,
+                  line: comment.line,
+                  body: comment.body
+                });
+              }
+            }
+  
+  calculate-examples:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Install project dependencies
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Run calculation examples
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_MODEL: ${{ secrets.HF_MODEL }}
+        run: |
+          echo "运行计算示例并生成报告..."
+          python scripts/generate_calculation_examples.py
+      
+      - name: Upload calculation reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: calculation-reports
+          path: reports/
+          retention-days: 7
+
+  monitor-api-usage:
+    runs-on: ubuntu-latest
+    if: always()  # 总是运行，用于监控
+    
+    steps:
+      - name: Check API usage
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          echo "检查Hugging Face API使用情况..."
+          
+          # 简单检查API是否可用
+          response=$(curl -s -H "Authorization: Bearer $HF_TOKEN" \
+            "https://huggingface.co/api/whoami")
+          
+          echo "API状态: $response"
+          
+          # 这里可以添加更详细的使用量检查
+          # Hugging Face目前没有公开的用量API，需要手动检查
